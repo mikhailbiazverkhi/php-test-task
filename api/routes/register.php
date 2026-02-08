@@ -1,26 +1,35 @@
 <?php
 
 Flight::route('POST /register', function () {
-
+    $pdo = Flight::get('pdo');
     $data = Flight::request()->data;
 
-    $name  = trim($data->name ?? '');
-    $email = trim($data->email ?? '');
-    $pass  = trim($data->password ?? '');
+    $name = trim($data['name'] ?? '');
+    $email = trim($data['email'] ?? '');
+    $password = $data['password'] ?? '';
 
-    // простая валидация
-    if ($name === '' || $email === '' || $pass === '') {
-        Flight::json([
-            'error' => 'Missing required fields'
-        ], 400);
+    if (!$name || !$email || !$password) {
+        Flight::json(['error' => 'Missing required fields'], 400);
         return;
     }
 
-    Flight::json([
-        'status' => 'user created',
-        'user' => [
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+
+    $stmt = $pdo->prepare("
+        INSERT INTO users (name, email, password)
+        VALUES (:name, :email, :password)
+    ");
+
+    try {
+        $stmt->execute([
             'name' => $name,
-            'email' => $email
-        ]
-    ]);
+            'email' => $email,
+            'password' => $hash,
+        ]);
+    } catch (PDOException $e) {
+        Flight::json(['error' => 'Email already exists'], 409);
+        return;
+    }
+
+    Flight::json(['status' => 'user created']);
 });

@@ -13,25 +13,23 @@ Flight::route('POST /login', function () {
     }
 
     $stmt = $pdo->prepare("
-        SELECT id, name, email, password
+        SELECT id, email, password
         FROM users
         WHERE email = :email
         LIMIT 1
     ");
 
     $stmt->execute(['email' => $email]);
-    $user = $stmt->fetch();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user || !password_verify($password, $user['password'])) {
         Flight::json(['error' => 'Invalid credentials'], 401);
         return;
     }
 
-    // do not return the password
-    unset($user['password']);
+    //SESSION STARTED IN bootstrap.php
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['email'] = $user['email'];
 
-    Flight::json([
-        'status' => 'login success',
-        'user' => $user
-    ]);
+    Flight::json(['status' => 'login success']);
 });

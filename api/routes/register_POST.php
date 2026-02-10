@@ -13,6 +13,11 @@ Flight::route('POST /register', function () {
         return;
     }
 
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    Flight::json(['error' => 'Invalid email format'], 400);
+    return;
+    }
+
     $hash = password_hash($password, PASSWORD_DEFAULT);
 
     $stmt = $pdo->prepare("
@@ -27,9 +32,13 @@ Flight::route('POST /register', function () {
             'password' => $hash,
         ]);
     } catch (PDOException $e) {
+    if ($e->getCode() == 23000) { // integrity constraint violation
         Flight::json(['error' => 'Email already exists'], 409);
-        return;
+    } else {
+        Flight::json(['error' => 'Server error'], 500);
     }
+    return;
+}
 
     Flight::json(['status' => 'user created']);
 });

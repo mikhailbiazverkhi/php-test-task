@@ -67,4 +67,4 @@ class UserService {
         $stmt = $this->pdo->prepare("DELETE FROM users WHERE id = :id");
         $stmt->execute(['id' => $id]);
     }
-}
+ }

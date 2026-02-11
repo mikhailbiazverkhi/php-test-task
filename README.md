@@ -1,47 +1,54 @@
-# PHP Test Task – Flight Framework
+# PHP Test App
 
-Simple REST API built with **Flight PHP micro-framework**.
+A simple PHP web application using the Flight Framework for user registration, login, and profile management.
 
-## Stack
-- PHP  
-- Flight PHP micro-framework  
-- MySQL  
-- jQuery + Bootstrap (frontend)  
+## Features
+- User registration: name, email, password, birth_date
+- PHP session-based authentication
+- View and update user profile
+- Logout and delete account
+- REST API endpoints: `/register`, `/login`, `/logout`, `/profile`
+
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/username/php-test.git
+2. Set up the MySQL database:
+
+CREATE DATABASE php_test;
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255),
+    birth_date DATE
+);
+3. Configure your database connection in api/bootstrap.php.
+
+4. Start your local server (e.g., XAMPP/Apache) and open http://localhost/php-test/public/index.html.
 
 ## Project Structure
-
-api/
-├── bootstrap.php ← PDO + session init
-├── index.php ← API entry point, starts Flight, loads controllers
-├── controllers/
-│ └── UserController.php ← all routes: register, login, logout, profile
-└── services/
-└── UserService.php ← all SQL queries and business logic
-public/
-├── index.html ← home / sign in / sign up links
-├── signin.html ← login form
-├── signup.html ← registration form
-├── profile.html ← profile view / edit
-└── js/
-└── app.js ← frontend AJAX requests to API
-
-## Current Status
-
-- Flight framework initialized  
-- API bootstrap configured  
-- **UserController + UserService implemented**  
-  - POST `/register` – register a new user  
-  - POST `/login` – login user  
-  - POST `/logout` – logout user  
-  - GET `/profile` – get current user profile  
-  - PUT `/profile` – update profile (name, birth_date, password)  
-  - DELETE `/profile` – delete account  
-- Sessions fully implemented (`$_SESSION['user_id']`)  
-- Postman tested – all endpoints work correctly  
-- Frontend not yet fully connected  
+php-test/
+├── api/
+│   ├── index.php
+│   ├── bootstrap.php
+│   ├── .htaccess
+│   ├── controllers/
+│   │   └── UserController.php
+│   └── services/
+│       └── UserService.php
+├── public/
+│   ├── index.html
+│   ├── signin.html
+│   ├── signup.html
+│   ├── profile.html
+│   ├── js/
+│   │   └── app.js
+│   └── css/
 
 ## Usage
+Open index.html, register a new account, and log in.
 
-- Project setup: place the project folder in XAMPP's `htdocs`  
-- Testing API: currently only via Postman  
-- Frontend is not yet connected
+Go to profile.html to view and edit your profile.
+
+Profile updates, login, and registration are handled via AJAX, and PHP sessions are properly maintained.

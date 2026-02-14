@@ -1,0 +1,11 @@
+CREATE DATABASE php_test;
+USE php_test;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    birth_date DATE NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

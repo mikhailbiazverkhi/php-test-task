@@ -52,3 +52,8 @@ Open index.html, register a new account, and log in.
 Go to profile.html to view and edit your profile.
 
 Profile updates, login, and registration are handled via AJAX, and PHP sessions are properly maintained.
+
+## Database Setup
+1. Create a MySQL database (e.g. `php_test`)
+2. Import the provided `database.sql` file
+3. Update database credentials in bootstrap.php
